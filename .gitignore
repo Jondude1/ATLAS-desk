@@ -1,0 +1,25 @@
+# --- Secrets: NEVER commit (same discipline as the ClearDash keystore rule) ---
+*token*
+*secret*
+*.key
+*.pem
+*.jks
+.env
+.env.*
+ha_token.txt
+options.json
+config.local.*
+secrets/
+
+# --- Runtime data (personal calendar/shop data stays off GitHub) ---
+snapshots/*.json
+!snapshots/.gitkeep
+
+# --- Python / tooling ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- OS / editor ---
+.DS_Store
+*.swp
