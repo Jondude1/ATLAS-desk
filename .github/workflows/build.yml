@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python-syntax:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile-check all Python sources
+        run: |
+          python -m py_compile \
+            addon/atlas_desk/backend/deckd.py \
+            tools/write_calendar_snapshot.py \
+            tools/write_shop_snapshot.py
+
+  docker-build:
+    name: Add-on image trial build (no push)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the add-on image
+        # The Dockerfile defaults BUILD_FROM to python:3.12-slim, the same
+        # base build.yaml maps to for amd64, so a plain build here matches
+        # what the Home Assistant builder produces on the Pi.
+        run: docker build --tag atlas-desk:ci addon/atlas_desk
