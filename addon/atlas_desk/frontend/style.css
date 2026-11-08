@@ -1,0 +1,68 @@
+:root {
+  --bg: #0b0e13;
+  --card: #151a22;
+  --border: #232b38;
+  --text: #e8edf4;
+  --dim: #93a1b5;
+  --accent: #4da3ff;
+  --amber: #f5b544;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 18px;
+  transition: filter 1.2s ease;
+}
+body.night { filter: brightness(.5); }
+
+header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 4px 6px 16px; cursor: pointer; user-select: none;
+}
+header .logo { width: 44px; height: 44px; }
+.wordmark { font-size: 1.55rem; font-weight: 700; letter-spacing: .02em; }
+.pill {
+  font-size: .8rem; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+  background: #12351f; color: #57d98a; border: 1px solid #1f5c36;
+}
+.pill.bad { background: #3d2c07; color: var(--amber); border-color: #6b4d0e; }
+.clockbox { margin-left: auto; text-align: right; }
+#clock { font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+body.night #clock { font-size: 3rem; }
+#dateline { color: var(--dim); font-size: .9rem; }
+
+.grid {
+  display: grid; gap: 16px; grid-template-columns: 1fr;
+}
+@media (min-width: 700px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 22px; min-height: 210px;
+  display: flex; flex-direction: column;
+}
+.card h2 {
+  font-size: .95rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 10px;
+}
+.big { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 700; line-height: 1.05; }
+.lines { margin-top: 12px; font-size: 1.12rem; line-height: 1.5; color: var(--text); }
+.lines .dim { color: var(--dim); }
+.lines.events { font-size: 1.3rem; margin-top: 2px; }
+.lines.events .ev { padding: 7px 0; border-bottom: 1px solid var(--border); }
+.lines.events .ev:last-child { border-bottom: none; }
+.lines.events .when { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.bar {
+  margin-top: 14px; height: 14px; border-radius: 7px;
+  background: #232b38; overflow: hidden;
+}
+.bar .fill {
+  height: 100%; background: var(--accent); border-radius: 7px;
+  transition: width .6s ease;
+}
+.foot { margin-top: auto; padding-top: 14px; font-size: .85rem; color: var(--dim); }
+.foot.stale { color: var(--amber); font-weight: 600; }

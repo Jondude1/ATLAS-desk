@@ -1,0 +1,20 @@
+name: "ATLAS Desk"
+slug: atlas_desk
+version: "0.1.0"
+description: "Glanceable desk face — printer, house, shop, next up. Read-only."
+arch:
+  - aarch64
+  - amd64
+init: false
+startup: application
+boot: auto
+ports:
+  8098/tcp: 8098
+ports_description:
+  8098/tcp: "ATLAS Desk web UI"
+map:
+  - share:ro
+options:
+  ha_url: "http://homeassistant:8123"
+schema:
+  ha_url: str?

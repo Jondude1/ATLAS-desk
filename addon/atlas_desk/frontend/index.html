@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e13">
+<title>ATLAS Desk</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header id="hdr" title="Tap for fullscreen">
+  <img src="/icon.svg" alt="" class="logo">
+  <div class="wordmark">ATLAS Desk</div>
+  <div id="hdr-status" class="pill ok">Live</div>
+  <div class="clockbox">
+    <div id="clock">--:--:--</div>
+    <div id="dateline">—</div>
+  </div>
+</header>
+<main class="grid">
+  <section class="card" id="card-printer">
+    <h2>Printer</h2>
+    <div class="big" id="printer-big">—</div>
+    <div class="bar" id="printer-bar" hidden><div class="fill" id="printer-fill"></div></div>
+    <div class="lines" id="printer-lines"></div>
+    <div class="foot" id="printer-foot"></div>
+  </section>
+  <section class="card" id="card-house">
+    <h2>House</h2>
+    <div class="big" id="house-big">—</div>
+    <div class="lines" id="house-lines"></div>
+    <div class="foot" id="house-foot"></div>
+  </section>
+  <section class="card" id="card-shop">
+    <h2>Shop</h2>
+    <div class="big" id="shop-big">—</div>
+    <div class="lines" id="shop-lines"></div>
+    <div class="foot" id="shop-foot"></div>
+  </section>
+  <section class="card" id="card-calendar">
+    <h2>Next Up</h2>
+    <div class="lines events" id="calendar-lines"></div>
+    <div class="foot" id="calendar-foot"></div>
+  </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
