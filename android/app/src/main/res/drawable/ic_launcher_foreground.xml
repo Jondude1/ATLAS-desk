@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Derived from the Phase 1 icon motif: the peak "A" glyph on the dark
+     rounded square, with the amber signal dot and arc. Drawn inside the
+     adaptive-icon safe zone on a 108dp canvas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- peak glyph -->
+    <path
+        android:pathData="M54,26 L78,82 L66,82 L54,54 L42,82 L30,82 Z"
+        android:fillColor="#4DA3FF" />
+    <!-- crossbar -->
+    <path
+        android:pathData="M45,68 L63,68 A3,3 0 0 1 63,74 L45,74 A3,3 0 0 1 45,68 Z"
+        android:fillColor="#4DA3FF" />
+    <!-- signal dot -->
+    <path
+        android:pathData="M79,27 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#F5B544" />
+    <!-- signal arc -->
+    <path
+        android:pathData="M70,38 A15,15 0 0 1 90,22"
+        android:strokeColor="#F5B544"
+        android:strokeWidth="2.4"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round" />
+</vector>

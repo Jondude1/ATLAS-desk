@@ -23,3 +23,12 @@ __pycache__/
 # --- OS / editor ---
 .DS_Store
 *.swp
+
+# --- Android (Phase 2 app) ---
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/keystore/
+*.apk
+*.aab
