@@ -4,9 +4,11 @@
 Read-only by design: the ONLY outbound request this service ever makes is
 GET {ha_url}/api/states against Home Assistant, plus reading snapshot
 JSON files from /share/atlas-desk. It never calls an HA service and never
-writes to HA. The HA long-lived token is read from a file on the Pi
-(/share/atlas-desk/ha_token.txt) or the add-on options; it is never
-logged and never sent to the browser.
+writes to HA. Auth uses the Supervisor-injected token when the add-on
+runs with homeassistant_api (the HA Slicer AI pattern), else Jon's
+long-lived token from a file on the Pi (/share/atlas-desk/ha_token.txt)
+or the add-on options. Tokens are never logged and never sent to the
+browser.
 
 Stale behaviour: if an HA poll fails, the last good card data is served
 with stale=true and stale_since=<last successful poll>. Values are never
@@ -21,7 +23,7 @@ import urllib.request
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 PORT = int(os.environ.get("DECK_PORT", "8098"))
 FRONTEND_DIR = os.environ.get("DECK_FRONTEND", "/app/frontend")
 SHARE_DIR = os.environ.get("DECK_SHARE_DIR", "/share/atlas-desk")
@@ -54,17 +56,25 @@ HA_URL = (os.environ.get("DECK_HA_URL") or OPTIONS.get("ha_url")
 
 
 def resolve_token():
+    """Returns (token, source_name). The value itself is never logged."""
+    # Order: explicit env, then the Supervisor-injected token (present when
+    # the add-on declares homeassistant_api — the HA Slicer AI pattern),
+    # then the long-lived token file on the Pi, then add-on options.
     env = os.environ.get("HA_TOKEN", "").strip()
     if env:
-        return env
+        return env, "env HA_TOKEN"
+    env = os.environ.get("SUPERVISOR_TOKEN", "").strip()
+    if env:
+        return env, "env SUPERVISOR_TOKEN"
     try:
         with open(os.path.join(SHARE_DIR, "ha_token.txt")) as f:
             tok = f.read().strip()
             if tok:
-                return tok
+                return tok, "token file"
     except Exception:
         pass
-    return (OPTIONS.get("ha_token") or "").strip()
+    tok = (OPTIONS.get("ha_token") or "").strip()
+    return (tok, "add-on options") if tok else ("", "none")
 
 
 def to_float(v):
@@ -316,15 +326,48 @@ class Handler(BaseHTTPRequestHandler):
         self._send(200, data, CONTENT_TYPES.get(ext, "application/octet-stream"))
 
 
+def pick_ha_base():
+    """Add-on containers can reach Core at different addresses depending on
+    the install (internal DNS name, host gateway, host tailnet IP). Probe
+    the candidates once at startup — any HTTP response from /api/ (even a
+    401) proves Core is there — and use the first that answers."""
+    import urllib.error
+    candidates = [HA_URL, "http://supervisor/core", "http://homeassistant:8123",
+                  "http://172.30.32.1:8123", "http://100.68.172.113:8123"]
+    seen = []
+    for cand in candidates:
+        cand = cand.rstrip("/")
+        if cand in seen:
+            continue
+        seen.append(cand)
+        try:
+            req = urllib.request.Request(cand + "/api/", method="GET")
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                resp.read()
+            return cand
+        except urllib.error.HTTPError:
+            return cand
+        except Exception:
+            continue
+    return HA_URL
+
+
 def poll_loop():
-    token = resolve_token()
+    global HA_URL
+    token, source = resolve_token()
     if not token:
         log("WARNING: no HA token found (env, token file, or options) — HA source disabled")
         return
+    log(f"HA auth source: {source}")
+    HA_URL = pick_ha_base()
     log(f"polling HA at {HA_URL} every {POLL_SECONDS}s (read-only GET /api/states)")
+    import urllib.error
     while True:
         try:
             STATE.poll_once(token)
+        except urllib.error.HTTPError as e:
+            STATE.mark_failed()
+            log(f"HA poll failed (HTTP {e.code}); serving last good data as stale")
         except Exception as e:
             STATE.mark_failed()
             log(f"HA poll failed ({type(e).__name__}); serving last good data as stale")
