@@ -120,3 +120,16 @@ No hardware, no subscriptions, no Play developer account. Build draws on
 the shared Claude Pro allowance across a few sessions, announced before
 each. Independence rule: pass — repo, keystore backup, and releases are
 Jon's; the app talks only to his Pi.
+
+## Design decision (2026-11-08, after the research pass)
+
+Jon delegated the pick; Helios chose **Direction A "Soft Midnight"**
+(Catppuccin Mocha) from
+`~/workspace/research_notes/atlas-desk-ui-design-research-20261108-1329/report.md`,
+with one borrow from Direction C: the Printer and Shop hero values
+render in a large tabular monospace. Applied in the first pass:
+crust `#11111B` background, mantle `#181825` flat cards at 22dp
+radius, one fixed pastel accent per card (Printer mauve, House
+teal, Shop green, Next Up blue), Mushroom-style icon-in-tinted-
+circle + hero + one secondary line, status as rounded pills. Red
+is reserved for real alerts only.

@@ -6,26 +6,52 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 /**
- * PLACEHOLDER theme — neutral dark grays only. The real design language
- * lands after the design-research pass and Jon's pick of a direction.
- * The one functional color is the amber stale indicator.
+ * ATLAS Desk theme — Direction A "Soft Midnight" (design decision
+ * 2026-11-08): Catppuccin Mocha. Flat cards on the crust background,
+ * pastel accents reserved for identity and state, never decoration.
+ *
+ *   crust    #11111B  app background
+ *   base     #1E1E2E  raised background
+ *   mantle   #181825  card fill
+ *   surface0 #313244  chips, borders, icon tints
+ *   text     #CDD6F4  primary text
+ *   subtext0 #A6ADC8  secondary text
  */
-private val PlaceholderScheme = darkColorScheme(
-    primary = Color(0xFF9FB0C3),
-    onPrimary = Color(0xFF0B0E13),
-    background = Color(0xFF0B0E13),
-    onBackground = Color(0xFFE6EAF0),
-    surface = Color(0xFF151A22),
-    onSurface = Color(0xFFE6EAF0),
-    surfaceVariant = Color(0xFF1C232E),
-    onSurfaceVariant = Color(0xFF9AA7B8),
-    outline = Color(0xFF232B38),
+object Mocha {
+    val Crust = Color(0xFF11111B)
+    val Base = Color(0xFF1E1E2E)
+    val Mantle = Color(0xFF181825)
+    val Surface0 = Color(0xFF313244)
+    val Text = Color(0xFFCDD6F4)
+    val Subtext = Color(0xFFA6ADC8)
+
+    // Fixed per-card accents (identity, set once, never rotated)
+    val Mauve = Color(0xFFCBA6F7) // Printer
+    val Teal = Color(0xFF94E2D5) // House
+    val Green = Color(0xFFA6E3A1) // Shop + "ok/live" state
+    val Blue = Color(0xFF89B4FA) // Next Up
+    val Peach = Color(0xFFFAB387) // in-progress / warm state
+    val Yellow = Color(0xFFF9E2AF) // stale / caution state
+    val Red = Color(0xFFF38BA8) // real alerts only
+}
+
+private val SoftMidnightScheme = darkColorScheme(
+    primary = Mocha.Mauve,
+    onPrimary = Mocha.Crust,
+    background = Mocha.Crust,
+    onBackground = Mocha.Text,
+    surface = Mocha.Mantle,
+    onSurface = Mocha.Text,
+    surfaceVariant = Mocha.Surface0,
+    onSurfaceVariant = Mocha.Subtext,
+    outline = Mocha.Surface0,
+    error = Mocha.Red,
 )
 
-val StaleAmber = Color(0xFFF5B544)
-val LiveGreen = Color(0xFF4CC38A)
+val StaleAmber = Mocha.Yellow
+val LiveGreen = Mocha.Green
 
 @Composable
 fun AtlasDeskTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = PlaceholderScheme, content = content)
+    MaterialTheme(colorScheme = SoftMidnightScheme, content = content)
 }

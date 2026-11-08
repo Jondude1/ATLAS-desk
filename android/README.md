@@ -34,7 +34,9 @@ SDK 35; a local compile is a syntax/smoke check only.
 ## Status
 
 First pass: scaffold, data layer, four cards, desk-mode basics
-(fullscreen, keep-on-while-charging, night dim 22:00–07:00 ET),
-neutral placeholder theme. Visual design lands after the
-design-research pass and Jon's pick of a direction. The in-app
-self-update checker (spec item 4) is a later pass.
+(fullscreen, keep-on-while-charging, night dim 22:00–07:00 ET).
+Theme: Direction A "Soft Midnight" (Catppuccin Mocha), picked
+2026-11-08 — flat mantle cards at 22dp on crust, one pastel accent
+per card, pill chips, monospace hero values on the Printer and
+Shop cards (the Direction C borrow). The in-app self-update
+checker (spec item 4) is a later pass.
